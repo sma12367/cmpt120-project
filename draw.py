@@ -1,11 +1,9 @@
-# Your header
+# draw.py
+# Project: Blackfoot Language Learning App
+# Submission 1: Image Processing Module
 
 import cmpt120image
-import random # Import random for distribute_items
-
-cmpt120image.init()
-
-# Note: delete all `return False` lines as you complete each function!
+import random
 
 def recolor_image(img, color):
   """
@@ -94,4 +92,27 @@ def draw_item(canvas, item, row, col):
         target_row = row + r
         target_col = col + c
         
-        # Ensure
+        # Ensure we don't draw outside the canvas
+        if 0 <= target_row < canvas_height and 0 <= target_col < canvas_width:
+            canvas[target_row][target_col] = pixel
+
+def distribute_items(canvas, item, n):
+  """
+  Draws the item n times at random locations on canvas.
+  Modifies canvas directly.
+  """
+  canvas_height = len(canvas)
+  canvas_width = len(canvas[0])
+  item_height = len(item)
+  item_width = len(item[0])
+
+  for i in range(n):
+    # Calculate valid random positions so the item (mostly) fits
+    # We use max(0, ...) to handle cases where item might be larger than canvas
+    max_row = max(0, canvas_height - item_height)
+    max_col = max(0, canvas_width - item_width)
+    
+    rand_row = random.randint(0, max_row)
+    rand_col = random.randint(0, max_col)
+    
+    draw_item(canvas, item, rand_row, rand_col)
